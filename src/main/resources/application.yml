@@ -1,0 +1,19 @@
+server:
+  port: @server.port@
+  servlet:
+    context-path: @server.context-path@
+spring:
+  rabbitmq:
+    username: @rabbit.username@
+    password: @rabbit.password@
+    host: @rabbit.hostname@
+    port: @rabbit.port@
+    template:
+      routing-key: @rabbit.temperature.routing-key@
+      exchange: @rabbit.temperature.exchange@
+      retry:
+        enabled: @rabbit.retry.enabled@
+        max-attempts: @rabbit.max-attempts@
+        max-interval: @rabbit.max-interval@
+    publisher-returns: @rabbit.publisher-returns@
+    publisher-confirm-type: @rabbit.publisher-confirm-type@
