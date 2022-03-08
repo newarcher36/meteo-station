@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.weather</groupId>
-	<artifactId>temperature-collector</artifactId>
+	<artifactId>meteo-station</artifactId>
 	<version>0.0.1</version>
-	<name>temperature-collector</name>
-	<description>Simple weather station based on microservices</description>
+	<name>meteo-station</name>
+	<description>Simple meteo station based on microservices</description>
 	<properties>
 		<java.version>11</java.version>
 		<testcontainers.version>1.16.2</testcontainers.version>
