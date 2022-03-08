@@ -7,6 +7,7 @@ import com.weather.temperaturecollector.domain.WeatherMeasure;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/weather-measure")
+@RequestMapping("/test")
 public class WeatherMeasureController {
 
     private final RegisterTemperatureMeasure registerTemperatureMeasure;
@@ -25,7 +26,7 @@ public class WeatherMeasureController {
     }
 
     @PostMapping
-    public void post(@RequestParam("timestamp") Long timestamp, @RequestParam("temperature") Float temperature, @RequestParam("pressure") Float pressure, @RequestParam("elevation") Float elevation) {
+    public void registerTemperatureMeasure(@RequestParam("timestamp") Long timestamp, @RequestParam("temperature") Float temperature, @RequestParam("pressure") Float pressure, @RequestParam("elevation") Float elevation) {
         WeatherMeasureDto weatherMeasureDto = WeatherMeasureDto.builder()
                 // TODO millis should be provided by weather station
                 .withTimestamp(LocalDateTime.now())
@@ -36,12 +37,12 @@ public class WeatherMeasureController {
 
         LOGGER.info("Weather measure received {}", weatherMeasureDto);
 
-        registerTemperatureMeasure.registerTemperature(map(weatherMeasureDto));
+        this.registerTemperatureMeasure(weatherMeasureDto);
     }
 
     // TODO fix post request in arduino
     //@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void registerTemperatureMeasure(@RequestBody WeatherMeasureDto weatherMeasureDto) {
+    public void registerTemperatureMeasure(WeatherMeasureDto weatherMeasureDto) {
         registerTemperatureMeasure.registerTemperature(map(weatherMeasureDto));
     }
 

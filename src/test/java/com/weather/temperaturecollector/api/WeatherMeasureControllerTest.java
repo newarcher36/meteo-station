@@ -37,7 +37,7 @@ class WeatherMeasureControllerTest {
                 //.withValue(23)
                 .build();
 
-        weatherMeasureController.registerTemperatureMeasure(weatherMeasureDto);
+        //weatherMeasureController.registerTemperatureMeasure(weatherMeasureDto);
 
         verify(registerTemperatureMeasure).registerTemperature(temperatureMeasureDtoCaptor.capture());
 
