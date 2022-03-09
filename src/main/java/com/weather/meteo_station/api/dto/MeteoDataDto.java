@@ -14,7 +14,7 @@ import static java.util.Objects.isNull;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class WeatherMeasureDto {
+public class MeteoDataDto {
 
     @JsonSerialize(using = CustomJsonSerializer.class)
     @JsonDeserialize(using = CustomJsonDeserializer.class)
@@ -23,7 +23,7 @@ public class WeatherMeasureDto {
     private final Float pressure;
     private final Float elevation;
 
-    private WeatherMeasureDto(LocalDateTime timestamp, Float temperature, Float pressure, Float elevation) {
+    private MeteoDataDto(LocalDateTime timestamp, Float temperature, Float pressure, Float elevation) {
         this.timestamp = timestamp;
         this.temperature = temperature;
         this.pressure = pressure;
@@ -31,6 +31,7 @@ public class WeatherMeasureDto {
         validate();
     }
 
+    // TODO Add validations
     private void validate() {
         if (isNull(timestamp)) {
             throw new IllegalArgumentException("Temperature measure timestamp is required");

@@ -1,6 +1,6 @@
 package com.weather.meteo_station.application.usecase;
 
-import com.weather.meteo_station.domain.WeatherMeasure;
+import com.weather.meteo_station.domain.MeteoData;
 import com.weather.meteo_station.infrastructure.amqp.client.TemperatureMeasurePublisher;
 import com.weather.meteo_station.infrastructure.amqp.event.WeatherMeasureEvent;
 import org.joda.time.LocalDateTime;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-class RegisterWeatherMeasureTest {
+class RegisterMeteoDataTest {
 
     @Mock
     private TemperatureMeasurePublisher temperatureMeasurePublisher;
@@ -29,13 +29,13 @@ class RegisterWeatherMeasureTest {
 
     @Test
     void registerTemperature() {
-        WeatherMeasure weatherMeasure = WeatherMeasure.builder()
+        MeteoData meteoData = MeteoData.builder()
                 .withTimestamp(LocalDateTime.parse("2022-01-01"))
                 //.withValue(23)
                 .build();
 
-        RegisterTemperatureMeasure registerTemperatureMeasure = new RegisterTemperatureMeasure(temperatureMeasurePublisher);
-        registerTemperatureMeasure.registerTemperature(weatherMeasure);
+        RegisterMeteoData registerMeteoData = new RegisterMeteoData(temperatureMeasurePublisher);
+        registerMeteoData.register(meteoData);
 
         verify(temperatureMeasurePublisher).publish(temperatureMeasureEventCaptor.capture());
 

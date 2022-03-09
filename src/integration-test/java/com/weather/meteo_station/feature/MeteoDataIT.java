@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TemperatureCollectorIT {
+public class MeteoDataIT {
 
     @Value("${local.server.port}")
     private int port;
@@ -28,16 +28,16 @@ public class TemperatureCollectorIT {
 
     @Test
     void
-    collectTemperatureFromSensor() throws IOException {
+    collectMeteoDataFromSensor() throws IOException {
         given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(aTemperatureMeasure())
-                .post("/weather/api/v1/temperature")
+                .body(aMeteoDataDto())
+                .post("/meteo-station/api/v1/meteo-data")
                 .then()
                 .statusCode(HTTP_OK);
     }
 
-    private JsonNode aTemperatureMeasure() throws IOException {
-        return new ObjectMapper().readTree("{\"timestamp\":1642361588112, \"value\":23}");
+    private JsonNode aMeteoDataDto() throws IOException {
+        return new ObjectMapper().readTree("{\"timestamp\":1642361588112, \"temperature\":3, \"pressure\":980, \"elevation\":526}");
     }
 }

@@ -16,8 +16,6 @@
 	<properties>
 		<java.version>11</java.version>
 		<testcontainers.version>1.16.2</testcontainers.version>
-		<server.port>8080</server.port>
-		<server.context-path>/metheo-station/api</server.context-path>
 		<rabbit.hostname>rabbitmq</rabbit.hostname>
 		<rabbit.port>5672</rabbit.port>
 		<rabbit.username>user</rabbit.username>
