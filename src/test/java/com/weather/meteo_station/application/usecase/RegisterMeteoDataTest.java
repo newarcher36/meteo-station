@@ -1,8 +1,8 @@
 package com.weather.meteo_station.application.usecase;
 
 import com.weather.meteo_station.domain.MeteoData;
-import com.weather.meteo_station.infrastructure.amqp.client.TemperatureMeasurePublisher;
-import com.weather.meteo_station.infrastructure.amqp.event.WeatherMeasureEvent;
+import com.weather.meteo_station.infrastructure.amqp.client.MeteoDataPublisher;
+import com.weather.meteo_station.infrastructure.amqp.event.MeteoDataRegistrationEvent;
 import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,10 +17,10 @@ import static org.mockito.MockitoAnnotations.openMocks;
 class RegisterMeteoDataTest {
 
     @Mock
-    private TemperatureMeasurePublisher temperatureMeasurePublisher;
+    private MeteoDataPublisher meteoDataPublisher;
 
     @Captor
-    private ArgumentCaptor<WeatherMeasureEvent> temperatureMeasureEventCaptor;
+    private ArgumentCaptor<MeteoDataRegistrationEvent> temperatureMeasureEventCaptor;
 
     @BeforeEach
     void setUp() {
@@ -34,10 +34,10 @@ class RegisterMeteoDataTest {
                 //.withValue(23)
                 .build();
 
-        RegisterMeteoData registerMeteoData = new RegisterMeteoData(temperatureMeasurePublisher);
+        RegisterMeteoData registerMeteoData = new RegisterMeteoData(meteoDataPublisher);
         registerMeteoData.register(meteoData);
 
-        verify(temperatureMeasurePublisher).publish(temperatureMeasureEventCaptor.capture());
+        verify(meteoDataPublisher).publish(temperatureMeasureEventCaptor.capture());
 
 //        assertThat(temperatureMeasureEventCaptor.getValue())
 //                .extracting(WeatherMeasureEvent::getTimestamp, WeatherMeasureEvent::getValue)

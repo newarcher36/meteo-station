@@ -10,7 +10,7 @@ import org.joda.time.LocalDateTime;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class WeatherMeasureEvent {
+public class MeteoDataRegistrationEvent {
 
     private final LocalDateTime timestamp;
     private final Float temperature;

@@ -1,8 +1,8 @@
 package com.weather.meteo_station.application.usecase;
 
 import com.weather.meteo_station.domain.MeteoData;
-import com.weather.meteo_station.infrastructure.amqp.client.TemperatureMeasurePublisher;
-import com.weather.meteo_station.infrastructure.amqp.event.WeatherMeasureEvent;
+import com.weather.meteo_station.infrastructure.amqp.client.MeteoDataPublisher;
+import com.weather.meteo_station.infrastructure.amqp.event.MeteoDataRegistrationEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,19 +12,19 @@ import javax.inject.Named;
 public class RegisterMeteoData {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterMeteoData.class);
-    private final TemperatureMeasurePublisher temperatureMeasurePublisher;
+    private final MeteoDataPublisher meteoDataPublisher;
 
-    public RegisterMeteoData(TemperatureMeasurePublisher temperatureMeasurePublisher) {
-        this.temperatureMeasurePublisher = temperatureMeasurePublisher;
+    public RegisterMeteoData(MeteoDataPublisher meteoDataPublisher) {
+        this.meteoDataPublisher = meteoDataPublisher;
     }
 
     public void register(MeteoData meteoData) {
         LOGGER.info("Registering weather measure {}", meteoData);
-        temperatureMeasurePublisher.publish(map(meteoData));
+        meteoDataPublisher.publish(map(meteoData));
     }
 
-    private WeatherMeasureEvent map(MeteoData meteoData) {
-        return WeatherMeasureEvent.builder()
+    private MeteoDataRegistrationEvent map(MeteoData meteoData) {
+        return MeteoDataRegistrationEvent.builder()
                 .withTimestamp(meteoData.getTimestamp())
                 .withTemperature(meteoData.getTemperature())
                 .withPressure(meteoData.getPressure())

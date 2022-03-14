@@ -31,13 +31,18 @@ public class MeteoDataDto {
         validate();
     }
 
-    // TODO Add validations
     private void validate() {
         if (isNull(timestamp)) {
-            throw new IllegalArgumentException("Temperature measure timestamp is required");
+            throw new IllegalArgumentException("Meteo data timestamp is required");
         }
         if (isNull(temperature)) {
             throw new IllegalArgumentException("Temperature value is required");
+        }
+        if (isNull(pressure)) {
+            throw new IllegalArgumentException("Pressure value is required");
+        }
+        if (isNull(elevation)) {
+            throw new IllegalArgumentException("Elevation value is required");
         }
     }
 }
