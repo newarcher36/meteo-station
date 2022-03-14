@@ -20,27 +20,31 @@ class RegisterMeteoDataTest {
     private MeteoDataPublisher meteoDataPublisher;
 
     @Captor
-    private ArgumentCaptor<MeteoDataRegistrationEvent> temperatureMeasureEventCaptor;
+    private ArgumentCaptor<MeteoDataRegistrationEvent> meteoDataRegistrationEventCaptor;
 
     @BeforeEach
     void setUp() {
         openMocks(this);
     }
 
-    @Test
-    void registerTemperature() {
-        MeteoData meteoData = MeteoData.builder()
+    @Test void
+    registerTemperature() {
+        MeteoData actualMeteoData = MeteoData.builder()
                 .withTimestamp(LocalDateTime.parse("2022-01-01"))
-                //.withValue(23)
+                .withTemperature(23f)
+                .withPressure(950f)
+                .withElevation(526f)
                 .build();
 
         RegisterMeteoData registerMeteoData = new RegisterMeteoData(meteoDataPublisher);
-        registerMeteoData.register(meteoData);
+        registerMeteoData.register(actualMeteoData);
 
-        verify(meteoDataPublisher).publish(temperatureMeasureEventCaptor.capture());
+        verify(meteoDataPublisher).publish(meteoDataRegistrationEventCaptor.capture());
 
-//        assertThat(temperatureMeasureEventCaptor.getValue())
-//                .extracting(WeatherMeasureEvent::getTimestamp, WeatherMeasureEvent::getValue)
-//                .containsExactly(LocalDateTime.parse("2022-01-01"), 23);
+        MeteoDataRegistrationEvent expectedMeteoDataRegistrationEvent = meteoDataRegistrationEventCaptor.getValue();
+
+        assertThat(actualMeteoData)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedMeteoDataRegistrationEvent);
     }
 }

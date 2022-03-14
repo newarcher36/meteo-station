@@ -27,22 +27,28 @@ class MeteoDataControllerTest {
         openMocks(this);
     }
 
-    @Test
-    void
+    @Test void
     registerTemperatureMeasure() {
         MeteoDataController meteoDataController = new MeteoDataController(registerMeteoData);
 
-        MeteoDataDto meteoDataDto = MeteoDataDto.builder()
+        MeteoDataDto actualMeteoDataDto = MeteoDataDto.builder()
                 .withTimestamp(LocalDateTime.parse("2022-01-01"))
-                //.withValue(23)
+                .withTemperature(23f)
+                .withPressure(950f)
+                .withElevation(526f)
                 .build();
 
-        //weatherMeasureController.registerTemperatureMeasure(weatherMeasureDto);
+        meteoDataController.registerMeteoData(actualMeteoDataDto);
 
         verify(registerMeteoData).register(temperatureMeasureDtoCaptor.capture());
 
-//        assertThat(temperatureMeasureDtoCaptor.getValue())
-//                .extracting(WeatherMeasure::getTimestamp, WeatherMeasure::getValue)
-//                .containsExactly(LocalDateTime.parse("2022-01-01"), 23);
+        MeteoDataDto expectedMeteoDataDto = MeteoDataDto.builder()
+                .withTimestamp(LocalDateTime.parse("2022-01-01"))
+                .withTemperature(23f)
+                .withPressure(950f)
+                .withElevation(526f)
+                .build();
+
+        assertThat(actualMeteoDataDto).isEqualTo(expectedMeteoDataDto);
     }
 }
