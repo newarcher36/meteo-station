@@ -16,17 +16,6 @@
 	<properties>
 		<java.version>11</java.version>
 		<testcontainers.version>1.16.2</testcontainers.version>
-		<rabbit.hostname>rabbitmq</rabbit.hostname>
-		<rabbit.port>5672</rabbit.port>
-		<rabbit.username>user</rabbit.username>
-		<rabbit.password>pass</rabbit.password>
-		<rabbit.temperature.exchange>temperature_exchange</rabbit.temperature.exchange>
-		<rabbit.temperature.routing-key>temperature_routing_key</rabbit.temperature.routing-key>
-		<rabbit.retry.enabled>true</rabbit.retry.enabled>
-		<rabbit.max-attempts>3</rabbit.max-attempts>
-		<rabbit.max-interval>10000</rabbit.max-interval>
-		<rabbit.publisher-returns>true</rabbit.publisher-returns>
-		<rabbit.publisher-confirm-type>simple</rabbit.publisher-confirm-type>
 	</properties>
 	<dependencies>
 		<dependency>

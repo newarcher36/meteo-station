@@ -4,16 +4,16 @@ server:
     context-path: /meteo-station/api
 spring:
   rabbitmq:
-    username: @rabbit.username@
-    password: @rabbit.password@
-    host: @rabbit.hostname@
-    port: @rabbit.port@
+    username: user
+    password: pass
+    host: rabbitmq
+    port: 5672
     template:
-      routing-key: @rabbit.temperature.routing-key@
-      exchange: @rabbit.temperature.exchange@
+      routing-key: temperature_routing_key
+      exchange: temperature_exchange
       retry:
-        enabled: @rabbit.retry.enabled@
-        max-attempts: @rabbit.max-attempts@
-        max-interval: @rabbit.max-interval@
-    publisher-returns: @rabbit.publisher-returns@
-    publisher-confirm-type: @rabbit.publisher-confirm-type@
+        enabled: true
+        max-attempts: 3
+        max-interval: 10000
+    publisher-returns: true
+    publisher-confirm-type: simple
