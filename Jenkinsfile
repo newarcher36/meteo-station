@@ -38,7 +38,9 @@ pipeline {
         stage("publish-docker-image") {
             steps {
                 sh 'echo "Pushing image newarcher/meteo-station:latest to docker hub"'
+                sh 'docker login -u newarcher -p -9r~MvTg9hvWpK.'
                 sh 'docker push newarcher/meteo-station:latest'
+                sh 'docker logout'
             }
         }
     }
