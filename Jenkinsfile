@@ -17,8 +17,8 @@ pipeline {
             }
         }
         stage("build-test_meteo-station") {
-            echo 'Compiling and launching unit and integration test'
             steps {
+                sh 'echo "Compiling and launching unit and integration test"'
                 sh 'mvn install -T2C'
             }
             post {
@@ -30,7 +30,7 @@ pipeline {
         }
         stage("build-docker-image") {
             steps {
-                echo 'Building docker image of mete-station'
+                sh 'echo "Building docker image of mete-station"'
                 sh 'docker build -t newarcher/meteo-station:latest .'
             }
         }
