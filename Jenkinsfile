@@ -35,9 +35,10 @@ pipeline {
                 sh 'docker build -t newarcher/meteo-station:latest .'
             }
         }
-        stage("deploy") {
+        stage("publish-docker-image") {
             steps {
-                echo 'deploy step'
+                sh 'echo "Pushing image newarcher/meteo-station:latest to docker hub"'
+                sh 'docker push newarcher/meteo-station:latest'
             }
         }
     }
