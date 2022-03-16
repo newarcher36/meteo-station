@@ -41,6 +41,7 @@ pipeline {
                 sh 'docker login -u newarcher -p -9r~MvTg9hvWpK.'
                 sh 'docker push newarcher/meteo-station:latest'
                 sh 'docker logout'
+                sh 'echo "done!"'
             }
         }
     }
