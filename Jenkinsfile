@@ -1,7 +1,7 @@
 pipeline {
 
     agent any
-    
+
     tools {
         maven 'maven 3.8.5'
         jdk 'jdk11'
@@ -16,19 +16,22 @@ pipeline {
                 '''
             }
         }
-        stage("build") {
+        stage("build-test_meteo-station") {
+            echo 'Compiling and launching unit and integration test'
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install'
+                sh 'mvn install -T2C'
             }
             post {
                 success {
                     junit 'target/surefire-reports/**/*.xml'
+                    junit 'target/failsafe-reports/**/*.xml'
                 }
             }
         }
-        stage("test") {
+        stage("build-docker-image") {
             steps {
-                echo 'echo step'
+                echo 'Building docker image of mete-station'
+                sh 'docker build -t newarcher/meteo-station:latest .'
             }
         }
         stage("deploy") {

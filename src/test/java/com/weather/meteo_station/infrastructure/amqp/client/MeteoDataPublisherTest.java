@@ -29,7 +29,7 @@ class MeteoDataPublisherTest {
     @Test void
     publishTemperatureMeasure() {
 
-        MeteoDataRegistrationEvent actualMeteoDataRegistrationEvent = MeteoDataRegistrationEvent.builder()
+        MeteoDataRegistrationEvent meteoDataRegistrationEvent = MeteoDataRegistrationEvent.builder()
                 .withTimestamp(now())
                 .withTemperature(23f)
                 .withPressure(950f)
@@ -37,12 +37,12 @@ class MeteoDataPublisherTest {
                 .build();
 
         MeteoDataPublisher meteoDataPublisher = new MeteoDataPublisher(rabbitTemplate);
-        meteoDataPublisher.publish(actualMeteoDataRegistrationEvent);
+        meteoDataPublisher.publish(meteoDataRegistrationEvent);
 
         verify(rabbitTemplate).convertAndSend(meteoDataRegistrationEventCaptor.capture());
 
-        MeteoDataRegistrationEvent expectedMeteoDataRegistrationEvent = meteoDataRegistrationEventCaptor.getValue();
+        MeteoDataRegistrationEvent actualMeteoDataRegistrationEvent = meteoDataRegistrationEventCaptor.getValue();
 
-        assertThat(actualMeteoDataRegistrationEvent).isEqualTo(expectedMeteoDataRegistrationEvent);
+        assertThat(actualMeteoDataRegistrationEvent).isEqualTo(meteoDataRegistrationEvent);
     }
 }

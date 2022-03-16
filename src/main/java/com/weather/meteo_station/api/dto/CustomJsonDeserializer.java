@@ -13,6 +13,6 @@ public class CustomJsonDeserializer extends JsonDeserializer<LocalDateTime> {
     @Override
     public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode timestamp = jsonParser.getCodec().readTree(jsonParser);
-        return timestamp.isNumber(  ) ? new LocalDateTime(timestamp.asLong()) : null;
+        return timestamp.isNumber() ? new LocalDateTime(timestamp.asLong()) : null;
     }
 }

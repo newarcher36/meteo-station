@@ -1,5 +1,6 @@
 package com.weather.meteo_station.infrastructure.amqp.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -23,17 +24,17 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public MessageConverter converter() {
-        return new Jackson2JsonMessageConverter();
+    public MessageConverter converter(ObjectMapper mapper) {
+        return new Jackson2JsonMessageConverter(mapper);
     }
 
     @Bean
-    public RabbitTemplate createRabbitTemplate(ConnectionFactory connectionFactory, RabbitProperties rabbitProperties){
+    public RabbitTemplate createRabbitTemplate(ConnectionFactory connectionFactory, RabbitProperties rabbitProperties, ObjectMapper mapper){
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
         rabbitTemplate.setMandatory(true);
 
         RabbitTemplateConfigurer rabbitTemplateConfigurer = new RabbitTemplateConfigurer(rabbitProperties);
-        rabbitTemplate.setMessageConverter(converter());
+        rabbitTemplate.setMessageConverter(converter(mapper));
         rabbitTemplateConfigurer.configure(rabbitTemplate, connectionFactory);
 
         return rabbitTemplate;
