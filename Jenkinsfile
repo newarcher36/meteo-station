@@ -30,7 +30,8 @@ pipeline {
         }
         stage("build-docker-image") {
             steps {
-                sh 'echo "Building docker image of mete-station"'
+                sh 'pwd'
+                sh 'echo "Building docker image of meteo-station"'
                 sh 'docker build -t newarcher/meteo-station:latest .'
             }
         }
