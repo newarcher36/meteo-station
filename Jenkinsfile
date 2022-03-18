@@ -31,6 +31,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'echo "Building docker image of meteo-station"'
+                sh 'whoami'
                 sh 'docker build -t newarcher/meteo-station:latest .'
             }
         }
