@@ -18,7 +18,7 @@ pipeline {
         stage("build-test_meteo-station") {
             steps {
                 sh 'echo "Compiling and launching unit (and in future also integration test)"'
-                sh 'mvn clean install'
+                sh 'mvn clean install -Pno-it'
             }
             post {
                 success {
