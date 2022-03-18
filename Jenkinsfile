@@ -18,13 +18,12 @@ pipeline {
         stage("build-test_meteo-station") {
             steps {
                 sh 'echo "Compiling and launching unit (and in future also integration test)"'
-                sh 'mvn clean install -Pno-it'
+                sh 'mvn clean install'
             }
             post {
                 success {
                     junit 'target/surefire-reports/**/*.xml'
-//                     TODO When it are fixed then uncomment
-//                     junit 'target/failsafe-reports/**/*.xml'
+                    junit 'target/failsafe-reports/**/*.xml'
                 }
             }
         }

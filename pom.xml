@@ -187,24 +187,6 @@
 					<testSourceDirectory>src/integration-test/java</testSourceDirectory>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
-	<!-- TODO fix, cannot run IT in aws instance, instance gets freeze	-->
-	<profiles>
-		<profile>
-			<id>no-it</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<configuration>
-							<skipTests>true</skipTests>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
