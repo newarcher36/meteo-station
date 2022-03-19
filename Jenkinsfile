@@ -6,6 +6,10 @@ pipeline {
         maven 'maven 3.8.5'
     }
 
+    environment {
+        DOCKER_HUB_PASS = credentials('docker-hub-password')
+    }
+
     stages {
         stage('Initialize') {
             steps {
@@ -37,7 +41,7 @@ pipeline {
         stage("publish-docker-image") {
             steps {
                 sh 'echo "Pushing image newarcher/meteo-station:latest to docker hub"'
-                sh 'cat /home/ec2-user/dpsx | docker login --username newarcher --password-stdin'
+                sh 'docker login -u newarcher -p $DOCKER_HUB_PASS'
                 sh 'docker push newarcher/meteo-station:latest'
                 sh 'docker logout'
                 sh 'echo "done!"'
