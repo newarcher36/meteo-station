@@ -31,14 +31,13 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'echo "Building docker image of meteo-station"'
-                sh 'whoami'
                 sh 'docker build -t newarcher/meteo-station:latest .'
             }
         }
         stage("publish-docker-image") {
             steps {
                 sh 'echo "Pushing image newarcher/meteo-station:latest to docker hub"'
-                sh 'docker login -u newarcher -p -9r~MvTg9hvWpK.'
+                sh 'cat /home/ec2-user/dpsx | docker login --username newarcher --password-stdin'
                 sh 'docker push newarcher/meteo-station:latest'
                 sh 'docker logout'
                 sh 'echo "done!"'
