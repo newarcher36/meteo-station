@@ -9,8 +9,8 @@ spring:
     host: rabbitmq
     port: 5672
     template:
-      routing-key: metedata_routing_key
-      exchange: metedata_exchange
+      routing-key: meteodata_routing_key
+      exchange: meteodata_exchange
       retry:
         enabled: true
         max-attempts: 3
