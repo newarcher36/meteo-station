@@ -17,7 +17,7 @@ public class MeteoDataTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Meteo data timestamp is required");
+                .hasMessage("Registration date is required");
     }
 
     @Test void
@@ -30,7 +30,7 @@ public class MeteoDataTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Temperature value is required");
+                .hasMessage("Temperature is required");
     }
 
     @Test void
@@ -44,7 +44,7 @@ public class MeteoDataTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Pressure value is required");
+                .hasMessage("Pressure is required");
     }
 
     @Test void
@@ -59,6 +59,6 @@ public class MeteoDataTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Elevation value is required");
+                .hasMessage("Elevation is required");
     }
 }

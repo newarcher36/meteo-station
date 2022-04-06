@@ -7,8 +7,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -36,7 +39,7 @@ class SaveTemperatureEventPublisherTest {
         SaveTemperatureEventPublisher saveTemperatureEventPublisher = new SaveTemperatureEventPublisher(rabbitTemplate);
         saveTemperatureEventPublisher.publish(saveTemperatureDataEvent);
 
-        verify(rabbitTemplate).convertAndSend(meteoDataRegistrationEventCaptor.capture());
+        verify(rabbitTemplate).convertSendAndReceiveAsType(any(), any(), meteoDataRegistrationEventCaptor.capture(), any(ParameterizedTypeReference.class));
 
         assertThat(meteoDataRegistrationEventCaptor.getValue())
                 .isNotNull()
