@@ -1,7 +1,7 @@
 server:
   port: 8090
   servlet:
-    context-path: /
+    context-path: /meteo-station
 spring:
   jersey:
     type: filter

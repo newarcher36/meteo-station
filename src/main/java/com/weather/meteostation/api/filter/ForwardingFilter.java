@@ -1,4 +1,4 @@
-package com.weather.meteostation.filter;
+package com.weather.meteostation.api.filter;
 
 import javax.inject.Named;
 import javax.servlet.Filter;
@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 @Named
-@WebFilter(urlPatterns = "/")
+@WebFilter(urlPatterns = "/*")
 public class ForwardingFilter implements Filter {
 
     private final Pattern[] urlResourcePatterns = new Pattern[] {
-            Pattern.compile("/catalog.*")
+            Pattern.compile("api/v1/meteo-data.*")
     };
 
     @Override

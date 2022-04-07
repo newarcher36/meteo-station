@@ -34,7 +34,7 @@ public class MeteoDataController {
     }
 
     @GetMapping
-    public MeteoDataStatisticsDto getOrdersByDate(@RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate, @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+    public MeteoDataStatisticsDto getMeteoDataStatistics(@RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate, @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         MeteoDataStatistics meteoDataStatistics = getMeteoDataStatistics.get(fromDate, toDate);
         return MeteoDataStatisticsDto.builder()
                 .withCurrentTemperature(meteoDataStatistics.getCurrentTemperature())
