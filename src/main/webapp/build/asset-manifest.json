@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/meteo-station/static/css/main.073c9b0a.css",
+    "main.js": "/meteo-station/static/js/main.45f5263f.js",
+    "static/js/787.994511a4.chunk.js": "/meteo-station/static/js/787.994511a4.chunk.js",
+    "static/media/logo.svg": "/meteo-station/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/meteo-station/index.html",
+    "main.073c9b0a.css.map": "/meteo-station/static/css/main.073c9b0a.css.map",
+    "main.45f5263f.js.map": "/meteo-station/static/js/main.45f5263f.js.map",
+    "787.994511a4.chunk.js.map": "/meteo-station/static/js/787.994511a4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.45f5263f.js"
+  ]
+}
