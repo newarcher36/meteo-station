@@ -1,16 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import React, {useState} from 'react';
+import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from 'chart.js';
+import {Bar} from 'react-chartjs-2';
 import axios from "axios";
-
 
 ChartJS.register(
   CategoryScale,
@@ -21,29 +12,30 @@ ChartJS.register(
   Legend
 );
 
-
-
 export function App() {
   const [currentTemperature, setCurrentTemperature] = useState(0);
   const [coldestTemperature, setColdestTemperature] = useState(0);
   const [warmestTemperature, setWarmestTemperature] = useState(0);
   const [averageTemperature, setAverageTemperature] = useState(0);
 
-  useEffect(() => {
-    const res = axios.get("https://localhost:8090/meteo-station/api/v1/meteo-data");
-    res.then();
-    setCurrentTemperature(5);
-    setColdestTemperature(-2);
-    setWarmestTemperature(10);
-    setAverageTemperature(6);
-  }, []);
+  window.setInterval( () =>  {
+    axios.get("http://localhost:8090/meteo-station/api/v1/meteo-data")
+        .then(r => {
+          setCurrentTemperature(r.data.currentTemperature);
+          setColdestTemperature(r.data.minTemperature);
+          setWarmestTemperature(r.data.maxTemperature);
+          setAverageTemperature(r.data.avgTemperature);
+        })
+        .catch(e => console.log(e));
+  }, 5000);
 
-  const labels = ['Heute'];
+
+  const labels = ['Temperatur Heute'];
   const data = {
     labels,
     datasets: [
       {
-        label: 'Aktuelle Temperatur',
+        label: 'Aktuel',
         data: [currentTemperature],
         backgroundColor: 'rgba(234,230,12,0.5)',
       },

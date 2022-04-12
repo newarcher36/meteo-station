@@ -11,7 +11,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/meteo-data")
+@RequestMapping("/api/v1/meteo-data")
 public class MeteoDataController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MeteoDataController.class);
@@ -34,8 +33,8 @@ public class MeteoDataController {
     }
 
     @GetMapping
-    public MeteoDataStatisticsDto getMeteoDataStatistics(@RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate, @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
-        MeteoDataStatistics meteoDataStatistics = getMeteoDataStatistics.get(fromDate, toDate);
+    public MeteoDataStatisticsDto getMeteoDataStatistics() {
+        MeteoDataStatistics meteoDataStatistics = getMeteoDataStatistics.get(LocalDate.now(), LocalDate.now().plusDays(1));
         return MeteoDataStatisticsDto.builder()
                 .withCurrentTemperature(meteoDataStatistics.getCurrentTemperature())
                 .withAvgTemperature(meteoDataStatistics.getAvgTemperature())

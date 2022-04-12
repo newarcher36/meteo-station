@@ -3,8 +3,6 @@ server:
   servlet:
     context-path: /meteo-station
 spring:
-  jersey:
-    type: filter
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
