@@ -13,7 +13,7 @@ ChartJS.register(
 );
 
 export function App() {
-  const [currentTemperature, setCurrentTemperature] = useState(0);
+  const [latestTemperature, setLatestTemperature] = useState(0);
   const [coldestTemperature, setColdestTemperature] = useState(0);
   const [warmestTemperature, setWarmestTemperature] = useState(0);
   const [averageTemperature, setAverageTemperature] = useState(0);
@@ -21,7 +21,7 @@ export function App() {
   window.setInterval( () =>  {
     axios.get("http://localhost:8090/meteo-station/api/v1/meteo-data")
         .then(r => {
-          setCurrentTemperature(r.data.currentTemperature);
+          setLatestTemperature(r.data.currentTemperature);
           setColdestTemperature(r.data.minTemperature);
           setWarmestTemperature(r.data.maxTemperature);
           setAverageTemperature(r.data.avgTemperature);
@@ -35,8 +35,8 @@ export function App() {
     labels,
     datasets: [
       {
-        label: 'Aktuel',
-        data: [currentTemperature],
+        label: 'Letzte',
+        data: [latestTemperature],
         backgroundColor: 'rgba(234,230,12,0.5)',
       },
       {
