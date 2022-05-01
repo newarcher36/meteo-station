@@ -45,3 +45,4 @@ build/
 .eslintcache
 node_modules
 build/*
+src/main/webapp/build/*
