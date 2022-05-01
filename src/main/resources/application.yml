@@ -4,9 +4,9 @@ server:
     context-path: /meteo-station
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABAE}
     driver-class-name: org.postgresql.Driver
-    username: postgres
+    username: ${PGUSER}
     password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
