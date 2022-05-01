@@ -17,8 +17,8 @@ spring:
         default_schema: meteodata
         dialect: org.hibernate.dialect.PostgreSQLDialect
   rabbitmq:
-    host: rabbitmq
-    port: 5672
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
     template:
       retry:
         enabled: true
