@@ -35,14 +35,14 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'echo "Building docker image of meteo-station"'
-                sh 'docker build -t newarcher/meteo-station:latest .'
+                sh 'docker build -t newarcher/meteo-station:v1 .'
             }
         }
         stage("publish-docker-image") {
             steps {
-                sh 'echo "Pushing image newarcher/meteo-station:latest to docker hub"'
+                sh 'echo "Pushing image newarcher/meteo-station to docker hub"'
                 sh 'docker login -u newarcher -p $DOCKER_HUB_PASS'
-                sh 'docker push newarcher/meteo-station:latest'
+                sh 'docker push newarcher/meteo-station:v1'
                 sh 'docker logout'
                 sh 'echo "done!"'
             }
