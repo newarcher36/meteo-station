@@ -38,7 +38,7 @@ public class SaveMeteoData {
         TemperatureDataEventSaved temperatureDataEventSaved = saveTemperatureEventPublisher.publish(saveTemperatureDataEvent);
 
         if (isNull(temperatureDataEventSaved) || !temperatureDataEventSaved.isSuccess()) {
-            meteoDataRepository.deleteById(temperatureDataEventSaved.getMeteoDataId());
+            meteoDataRepository.deleteById(savedMeteoDataRegistration.getId());
             throw new IllegalArgumentException(String.format("Could not save meteo data id [{%s}]", meteoData));
         }
     }
