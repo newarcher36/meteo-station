@@ -8,6 +8,9 @@ import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataEventSa
 import com.weather.meteostation.infrastructure.repository.MeteoDataRepository;
 
 import javax.inject.Named;
+import java.util.Objects;
+
+import static java.util.Objects.*;
 
 @Named
 public class SaveMeteoData {
@@ -34,7 +37,7 @@ public class SaveMeteoData {
 
         TemperatureDataEventSaved temperatureDataEventSaved = saveTemperatureEventPublisher.publish(saveTemperatureDataEvent);
 
-        if (!temperatureDataEventSaved.isSuccess()) {
+        if (isNull(temperatureDataEventSaved) || !temperatureDataEventSaved.isSuccess()) {
             meteoDataRepository.deleteById(temperatureDataEventSaved.getMeteoDataId());
             throw new IllegalArgumentException(String.format("Could not save meteo data id [{%s}]", meteoData));
         }
