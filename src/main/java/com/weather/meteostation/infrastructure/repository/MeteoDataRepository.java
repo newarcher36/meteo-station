@@ -40,7 +40,7 @@ public class MeteoDataRepository {
     @Transactional
     public void deleteById(Long meteoDataId) {
         LOGGER.info("Deleting meteo data with id {}", meteoDataId);
-        entityManager.detach(MeteoDataRegistration.builder().withId(meteoDataId).build());
+        entityManager.detach(MeteoDataRegistrationEntity.builder().withId(meteoDataId).build());
     }
 
     private MeteoDataRegistrationEntity map(MeteoDataRegistration meteoDataRegistration) {
