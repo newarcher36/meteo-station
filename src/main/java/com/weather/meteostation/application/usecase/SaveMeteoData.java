@@ -39,6 +39,7 @@ public class SaveMeteoData {
 
         if (isNull(temperatureDataEventSaved) || !temperatureDataEventSaved.isSuccess()) {
             meteoDataRepository.deleteById(savedMeteoDataRegistration.getId());
+            // TODO Should not be an IllegalArgumentException but a domain exception
             throw new IllegalArgumentException(String.format("Could not save meteo data with id [{%s}]", savedMeteoDataRegistration.getId()));
         }
     }
