@@ -13,13 +13,14 @@ import javax.inject.Named;
 @Named
 public class SaveTemperatureEventPublisher {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SaveTemperatureEventPublisher.class);
+
     @Value("${amqp.exchange.temperature}")
     private String exchange;
 
     @Value("${amqp.routing-key.save-temperature}")
     private String routingKey;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SaveTemperatureEventPublisher.class);
     private final RabbitTemplate rabbitTemplate;
 
     public SaveTemperatureEventPublisher(RabbitTemplate rabbitTemplate) {

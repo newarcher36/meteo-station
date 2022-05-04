@@ -6,6 +6,8 @@ import com.weather.meteostation.infrastructure.amqp.client.SaveTemperatureEventP
 import com.weather.meteostation.infrastructure.amqp.event.SaveTemperatureDataEvent;
 import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataEventSaved;
 import com.weather.meteostation.infrastructure.repository.MeteoDataRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.Objects;
@@ -15,6 +17,7 @@ import static java.util.Objects.*;
 @Named
 public class SaveMeteoData {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SaveMeteoData.class);
     private final SaveTemperatureEventPublisher saveTemperatureEventPublisher;
     private final MeteoDataRepository meteoDataRepository;
 
@@ -36,6 +39,7 @@ public class SaveMeteoData {
                 .build();
 
         TemperatureDataEventSaved temperatureDataEventSaved = saveTemperatureEventPublisher.publish(saveTemperatureDataEvent);
+        LOGGER.info("Response is : {}", temperatureDataEventSaved);
 
         if (isNull(temperatureDataEventSaved) || !temperatureDataEventSaved.isSuccess()) {
             meteoDataRepository.deleteById(savedMeteoDataRegistration.getId());
