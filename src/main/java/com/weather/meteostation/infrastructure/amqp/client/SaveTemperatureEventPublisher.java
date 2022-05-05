@@ -29,6 +29,9 @@ public class SaveTemperatureEventPublisher {
 
     public TemperatureDataSavedEvent publish(SaveTemperatureDataEvent saveTemperatureDataEvent) {
         LOGGER.info("Sending save temperature event message [{}] with exchange [{}] and routing-key [{}]", saveTemperatureDataEvent, rabbitTemplate.getExchange(), rabbitTemplate.getRoutingKey());
-        return rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, saveTemperatureDataEvent, new ParameterizedTypeReference<TemperatureDataSavedEvent>() {});
+        TemperatureDataSavedEvent temperatureDataSavedEvent = rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, saveTemperatureDataEvent, new ParameterizedTypeReference<TemperatureDataSavedEvent>() {});
+        LOGGER.info("TemperatureDataSavedEvent", temperatureDataSavedEvent);
+
+        return temperatureDataSavedEvent;
     }
 }

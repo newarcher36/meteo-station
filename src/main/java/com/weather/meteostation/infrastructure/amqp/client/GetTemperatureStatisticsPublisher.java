@@ -16,13 +16,14 @@ import static java.util.Objects.nonNull;
 @Named
 public class GetTemperatureStatisticsPublisher {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetTemperatureStatisticsPublisher.class);
+
     @Value("${amqp.exchange.temperature}")
     private String exchange;
 
     @Value("${amqp.routing-key.get-temperature-statistics}")
     private String routingKey;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetTemperatureStatisticsPublisher.class);
     private final RabbitTemplate rabbitTemplate;
 
     public GetTemperatureStatisticsPublisher(RabbitTemplate rabbitTemplate) {
