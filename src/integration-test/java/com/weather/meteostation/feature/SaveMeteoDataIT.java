@@ -3,7 +3,7 @@ package com.weather.meteostation.feature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weather.meteostation.infrastructure.amqp.event.SaveTemperatureDataEvent;
-import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataEventSaved;
+import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataSavedEvent;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,14 +29,13 @@ import static io.restassured.RestAssured.given;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @ActiveProfiles("test")
-@ContextConfiguration(initializers = {CollectMeteoDataIT.Initializer.class})
+@ContextConfiguration(initializers = {SaveMeteoDataIT.Initializer.class})
 @Sql(scripts = {"/schema.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class CollectMeteoDataIT {
+public class SaveMeteoDataIT {
 
     @Value("${local.server.port}")
     private int port;
@@ -69,14 +68,15 @@ public class CollectMeteoDataIT {
     }
 
     @Test void
-    collectMeteoDataFromSensor() throws IOException {
+    saveMeteoDataFromSensor() throws IOException {
 
-        TemperatureDataEventSaved temperatureDataEventSaved = TemperatureDataEventSaved.builder()
+        TemperatureDataSavedEvent temperatureDataSavedEvent = TemperatureDataSavedEvent.builder()
+                .withId(1L)
                 .withMeteoDataId(1L)
-                .withSuccess(true)
+                .withTemperatureValue(23f)
                 .build();
 
-        BDDMockito.given(rabbitTemplate.convertSendAndReceiveAsType(anyString(), anyString(), any(SaveTemperatureDataEvent.class), any())).willReturn(temperatureDataEventSaved);
+        BDDMockito.given(rabbitTemplate.convertSendAndReceiveAsType(anyString(), anyString(), any(SaveTemperatureDataEvent.class), any())).willReturn(temperatureDataSavedEvent);
 
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

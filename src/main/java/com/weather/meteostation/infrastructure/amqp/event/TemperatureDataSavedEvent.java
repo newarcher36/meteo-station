@@ -11,7 +11,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TemperatureDataEventSaved {
+public class TemperatureDataSavedEvent {
+    private Long id;
     private Long meteoDataId;
-    private boolean success;
+    private Float temperatureValue;
 }

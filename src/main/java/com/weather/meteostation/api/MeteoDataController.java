@@ -61,7 +61,7 @@ public class MeteoDataController {
     // TODO fix post request in arduino
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void registerMeteoData(@RequestBody MeteoDataDto meteoDataDto) {
-        saveMeteoData.register(map(meteoDataDto));
+        saveMeteoData.save(map(meteoDataDto));
     }
 
     private MeteoData map(MeteoDataDto meteoDataDto) {

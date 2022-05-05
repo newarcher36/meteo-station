@@ -4,7 +4,7 @@ import com.weather.meteostation.domain.MeteoData;
 import com.weather.meteostation.domain.MeteoDataRegistration;
 import com.weather.meteostation.infrastructure.amqp.client.SaveTemperatureEventPublisher;
 import com.weather.meteostation.infrastructure.amqp.event.SaveTemperatureDataEvent;
-import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataEventSaved;
+import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataSavedEvent;
 import com.weather.meteostation.infrastructure.repository.MeteoDataRepository;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -15,6 +15,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -33,13 +34,16 @@ class SaveMeteoDataTest {
     @Captor
     private ArgumentCaptor<SaveTemperatureDataEvent> saveTemperatureDataEventCaptor;
 
+    private SaveMeteoData saveMeteoData;
+
     @BeforeEach
     void setUp() {
         openMocks(this);
+        saveMeteoData = new SaveMeteoData(saveTemperatureEventPublisher, meteoDataRepository);
     }
 
     @Test void
-    registerTemperature() {
+    saveMeteoData() {
 
         MeteoData meteoData = MeteoData.builder()
                 .withRegistrationDate(LocalDateTime.parse("2022-01-01"))
@@ -54,16 +58,16 @@ class SaveMeteoDataTest {
                 .withElevation(526f)
                 .build();
 
-        TemperatureDataEventSaved temperatureDataEventSaved = TemperatureDataEventSaved.builder()
+        TemperatureDataSavedEvent temperatureDataSavedEvent = TemperatureDataSavedEvent.builder()
+                .withId(1L)
                 .withMeteoDataId(1L)
-                .withSuccess(true)
+                .withTemperatureValue(23f)
                 .build();
 
         given(meteoDataRepository.save(any(MeteoDataRegistration.class))).willReturn(savedMeteoDataRegistration);
-        given(saveTemperatureEventPublisher.publish(any(SaveTemperatureDataEvent.class))).willReturn(temperatureDataEventSaved);
+        given(saveTemperatureEventPublisher.publish(any(SaveTemperatureDataEvent.class))).willReturn(temperatureDataSavedEvent);
 
-        SaveMeteoData saveMeteoData = new SaveMeteoData(saveTemperatureEventPublisher, meteoDataRepository);
-        saveMeteoData.register(meteoData);
+        saveMeteoData.save(meteoData);
 
         verify(meteoDataRepository).save(meteoDataRegistrationCaptor.capture());
         verify(saveTemperatureEventPublisher).publish(saveTemperatureDataEventCaptor.capture());
@@ -78,5 +82,33 @@ class SaveMeteoDataTest {
                 .isNotNull()
                 .extracting(SaveTemperatureDataEvent::getMeteoDataId, SaveTemperatureDataEvent::getTemperatureValue)
                 .containsExactly(1L, 23f);
+    }
+
+    @Test void
+    failSaveMeteoDataWhenTemperatureIsNotSaved() {
+
+        MeteoData meteoData = MeteoData.builder()
+                .withRegistrationDate(LocalDateTime.parse("2022-01-01"))
+                .withTemperature(23f)
+                .withPressure(950f)
+                .withElevation(526f)
+                .build();
+
+        MeteoDataRegistration savedMeteoDataRegistration = MeteoDataRegistration.builder()
+                .withId(1L)
+                .withRegistrationDate(LocalDate.parse("2022-01-01"))
+                .withElevation(526f)
+                .build();
+
+        given(meteoDataRepository.save(any(MeteoDataRegistration.class))).willReturn(savedMeteoDataRegistration);
+        given(saveTemperatureEventPublisher.publish(any(SaveTemperatureDataEvent.class))).willReturn(null);
+
+        Throwable throwable = catchThrowable(() -> saveMeteoData.save(meteoData));
+
+        verify(meteoDataRepository).deleteById(1L);
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Could not save meteo data with id [1]");
     }
 }

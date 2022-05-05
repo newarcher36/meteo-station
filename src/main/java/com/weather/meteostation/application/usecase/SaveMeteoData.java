@@ -4,20 +4,16 @@ import com.weather.meteostation.domain.MeteoData;
 import com.weather.meteostation.domain.MeteoDataRegistration;
 import com.weather.meteostation.infrastructure.amqp.client.SaveTemperatureEventPublisher;
 import com.weather.meteostation.infrastructure.amqp.event.SaveTemperatureDataEvent;
-import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataEventSaved;
+import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataSavedEvent;
 import com.weather.meteostation.infrastructure.repository.MeteoDataRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
-import java.util.Objects;
 
-import static java.util.Objects.*;
+import static java.util.Objects.isNull;
 
 @Named
 public class SaveMeteoData {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SaveMeteoData.class);
     private final SaveTemperatureEventPublisher saveTemperatureEventPublisher;
     private final MeteoDataRepository meteoDataRepository;
 
@@ -26,7 +22,7 @@ public class SaveMeteoData {
         this.meteoDataRepository = meteoDataRepository;
     }
 
-    public void register(MeteoData meteoData) {
+    public void save(MeteoData meteoData) {
         MeteoDataRegistration meteoDataRegistration = MeteoDataRegistration.builder()
                 .withRegistrationDate(meteoData.getRegistrationDate().toLocalDate())
                 .withElevation(meteoData.getElevation())
@@ -38,13 +34,12 @@ public class SaveMeteoData {
                 .withTemperatureValue(meteoData.getTemperature())
                 .build();
 
-        TemperatureDataEventSaved temperatureDataEventSaved = saveTemperatureEventPublisher.publish(saveTemperatureDataEvent);
-        LOGGER.info("Response is : {}", temperatureDataEventSaved);
+        TemperatureDataSavedEvent temperatureDataSavedEvent = saveTemperatureEventPublisher.publish(saveTemperatureDataEvent);
 
-        if (isNull(temperatureDataEventSaved) || !temperatureDataEventSaved.isSuccess()) {
+        if (isNull(temperatureDataSavedEvent)) {
             meteoDataRepository.deleteById(savedMeteoDataRegistration.getId());
             // TODO Should not be an IllegalArgumentException but a domain exception
-            throw new IllegalArgumentException(String.format("Could not save meteo data with id [{%s}]", savedMeteoDataRegistration.getId()));
+            throw new IllegalArgumentException(String.format("Could not save meteo data with id [%s]", savedMeteoDataRegistration.getId()));
         }
     }
 }

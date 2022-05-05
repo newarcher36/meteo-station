@@ -44,7 +44,7 @@ class MeteoDataControllerTest {
 
         meteoDataController.registerMeteoData(actualMeteoDataDto);
 
-        verify(saveMeteoData).register(temperatureMeasureDtoCaptor.capture());
+        verify(saveMeteoData).save(temperatureMeasureDtoCaptor.capture());
 
         MeteoDataDto expectedMeteoDataDto = MeteoDataDto.builder()
                 .withTimestamp(LocalDateTime.parse("2022-01-01"))

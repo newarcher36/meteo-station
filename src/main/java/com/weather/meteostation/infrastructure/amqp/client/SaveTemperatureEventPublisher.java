@@ -1,7 +1,7 @@
 package com.weather.meteostation.infrastructure.amqp.client;
 
 import com.weather.meteostation.infrastructure.amqp.event.SaveTemperatureDataEvent;
-import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataEventSaved;
+import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataSavedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -27,8 +27,8 @@ public class SaveTemperatureEventPublisher {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public TemperatureDataEventSaved publish(SaveTemperatureDataEvent saveTemperatureDataEvent) {
+    public TemperatureDataSavedEvent publish(SaveTemperatureDataEvent saveTemperatureDataEvent) {
         LOGGER.info("Sending save temperature event message [{}] with exchange [{}] and routing-key [{}]", saveTemperatureDataEvent, rabbitTemplate.getExchange(), rabbitTemplate.getRoutingKey());
-        return rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, saveTemperatureDataEvent, new ParameterizedTypeReference<TemperatureDataEventSaved>() {});
+        return rabbitTemplate.convertSendAndReceiveAsType(exchange, routingKey, saveTemperatureDataEvent, new ParameterizedTypeReference<TemperatureDataSavedEvent>() {});
     }
 }
