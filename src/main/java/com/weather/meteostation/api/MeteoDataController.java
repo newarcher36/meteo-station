@@ -5,9 +5,8 @@ import com.weather.meteostation.api.dto.MeteoDataDto;
 import com.weather.meteostation.api.dto.MeteoDataStatisticsDto;
 import com.weather.meteostation.application.usecase.GetMeteoDataStatistics;
 import com.weather.meteostation.application.usecase.SaveMeteoData;
-import com.weather.meteostation.domain.MeteoData;
 import com.weather.meteostation.domain.MeteoDataStatistics;
-import org.joda.time.LocalDate;
+import com.weather.meteostation.domain.Meteodata;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/meteo-data")
+@RequestMapping("/api/meteodata")
 public class MeteoDataController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MeteoDataController.class);
@@ -32,9 +31,9 @@ public class MeteoDataController {
         this.getMeteoDataStatistics = getMeteoDataStatistics;
     }
 
-    @GetMapping
+    @GetMapping("/today")
     public MeteoDataStatisticsDto getMeteoDataStatistics() {
-        MeteoDataStatistics meteoDataStatistics = getMeteoDataStatistics.get(LocalDate.now(), LocalDate.now().plusDays(1));
+        MeteoDataStatistics meteoDataStatistics = getMeteoDataStatistics.get(todayStartOfDay(), todayEndOfDay());
         return MeteoDataStatisticsDto.builder()
                 .withCurrentTemperature(meteoDataStatistics.getCurrentTemperature())
                 .withAvgTemperature(meteoDataStatistics.getAvgTemperature())
@@ -64,12 +63,26 @@ public class MeteoDataController {
         saveMeteoData.save(map(meteoDataDto));
     }
 
-    private MeteoData map(MeteoDataDto meteoDataDto) {
-        return MeteoData.builder()
-                .withRegistrationDate(meteoDataDto.getTimestamp())
+    private Meteodata map(MeteoDataDto meteoDataDto) {
+        return Meteodata.builder()
+                .withRegistrationDateTime(meteoDataDto.getTimestamp())
                 .withTemperature(meteoDataDto.getTemperature())
                 .withPressure(meteoDataDto.getPressure())
                 .withElevation(meteoDataDto.getElevation())
                 .build();
+    }
+
+    private LocalDateTime todayStartOfDay() {
+        return LocalDateTime.now()
+                .withHourOfDay(0)
+                .withMinuteOfHour(0)
+                .withSecondOfMinute(0);
+    }
+
+    private LocalDateTime todayEndOfDay() {
+        return LocalDateTime.now()
+                .withHourOfDay(23)
+                .withMinuteOfHour(59)
+                .withSecondOfMinute(59);
     }
 }

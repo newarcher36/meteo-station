@@ -12,15 +12,15 @@ import static java.util.Objects.isNull;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class MeteoData {
+public class Meteodata {
 
-    private final LocalDateTime registrationDate;
+    private final LocalDateTime registrationDateTime;
     private final Float temperature;
     private final Float pressure;
     private final Float elevation;
 
-    private MeteoData(LocalDateTime registrationDate, Float temperature, Float pressure, Float elevation) {
-        this.registrationDate = registrationDate;
+    private Meteodata(LocalDateTime registrationDateTime, Float temperature, Float pressure, Float elevation) {
+        this.registrationDateTime = registrationDateTime;
         this.temperature = temperature;
         this.pressure = pressure;
         this.elevation = elevation;
@@ -28,7 +28,7 @@ public class MeteoData {
     }
 
     private void validate() {
-        if (isNull(registrationDate)) {
+        if (isNull(registrationDateTime)) {
             throw new IllegalArgumentException("Registration date is required");
         }
         if (isNull(temperature)) {

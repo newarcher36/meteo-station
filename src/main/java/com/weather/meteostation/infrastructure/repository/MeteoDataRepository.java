@@ -1,15 +1,15 @@
 package com.weather.meteostation.infrastructure.repository;
 
-import com.weather.meteostation.domain.MeteoDataRegistration;
-import com.weather.meteostation.infrastructure.entity.MeteoDataRegistrationEntity;
-import org.joda.time.LocalDate;
+import com.weather.meteostation.domain.MeteoDataStatistics;
+import com.weather.meteostation.domain.Meteodata;
+import com.weather.meteostation.infrastructure.repository.entity.MeteodataEntity;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import java.util.List;
 
 @Named
 public class MeteoDataRepository {
@@ -21,40 +21,35 @@ public class MeteoDataRepository {
         this.entityManager = entityManager;
     }
 
-    public List<Long> findByDateRange(LocalDate fromDate, LocalDate toDate) {
-        LOGGER.info("Retrieving meteo data from date {} to date {}", fromDate, toDate);
-        String query = "select m.id from MeteoDataRegistrationEntity m where m.registrationDate >= :fromDate and m.registrationDate >= :toDate";
-        return entityManager.createQuery(query, Long.class)
-                .setParameter("fromDate", fromDate)
-                .setParameter("toDate", toDate)
-                .getResultList();
+    public MeteoDataStatistics findByDateRange(LocalDateTime fromDateTime, LocalDateTime toDateTime) {
+        LOGGER.info("Fetching meteodata from date {} to date {}", fromDateTime, toDateTime);
+        String meteodataStatisticsQuery = "select " +
+                "(select m.temperature from m where m.id = max(m.id) ) as currentTemperature, " +
+                "max(m.temperature) as maxTemperature, " +
+                "min(m.temperature) as minTemperature, " +
+                "trunc(avg(m.temperature)) as avgTemperature " +
+                "from MeteodataEntity m " +
+                "where m.registrationDateTime >= :fromDate and m.registrationDateTime >= :toDate";
+
+        return entityManager.createQuery(meteodataStatisticsQuery, MeteoDataStatistics.class)
+                .setParameter("f`romDate", fromDateTime)
+                .setParameter("toDate", toDateTime)
+                .getSingleResult();
     }
 
     @Transactional
-    public MeteoDataRegistration save(MeteoDataRegistration meteoDataRegistration) {
-        LOGGER.info("Saving new meteo data {}", meteoDataRegistration);
-        MeteoDataRegistrationEntity meteoDataRegistrationEntity = entityManager.merge(map(meteoDataRegistration));
-        return map(meteoDataRegistrationEntity);
+    public void save(Meteodata meteodata) {
+        LOGGER.info("Saving meteodata {}", meteodata);
+        entityManager.merge(map(meteodata));
+
     }
 
-    @Transactional
-    public void deleteById(Long meteoDataId) {
-        LOGGER.info("Deleting meteo data with id {}", meteoDataId);
-        entityManager.detach(MeteoDataRegistrationEntity.builder().withId(meteoDataId).build());
-    }
-
-    private MeteoDataRegistrationEntity map(MeteoDataRegistration meteoDataRegistration) {
-        return MeteoDataRegistrationEntity.builder()
-                .withRegistrationDate(meteoDataRegistration.getRegistrationDate())
-                .withElevation(meteoDataRegistration.getElevation())
-                .build();
-    }
-
-    private MeteoDataRegistration map(MeteoDataRegistrationEntity meteoDataRegistrationEntity) {
-        return MeteoDataRegistration.builder()
-                .withId(meteoDataRegistrationEntity.getId())
-                .withRegistrationDate(meteoDataRegistrationEntity.getRegistrationDate())
-                .withElevation(meteoDataRegistrationEntity.getElevation())
+    private MeteodataEntity map(Meteodata meteodata) {
+        return MeteodataEntity.builder()
+                .withRegistrationDateTime(meteodata.getRegistrationDateTime())
+                .withTemperature(meteodata.getTemperature())
+                .withPressure(meteodata.getPressure())
+                .withElevation(meteodata.getElevation())
                 .build();
     }
 }

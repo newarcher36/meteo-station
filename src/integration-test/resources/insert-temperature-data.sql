@@ -1,3 +1,3 @@
-INSERT INTO meteodata.meteodata_register (id,registration_date,elevation) VALUES (1, (SELECT CURRENT_DATE), 526);
-INSERT INTO meteodata.meteodata_register (id,registration_date,elevation) VALUES (2, (SELECT CURRENT_DATE), 526);
-INSERT INTO meteodata.meteodata_register (id,registration_date,elevation) VALUES (3, (SELECT CURRENT_DATE), 526);
+INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (1, (SELECT CURRENT_TIMESTAMP), 0, 900, 526);
+INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (2, (SELECT CURRENT_TIMESTAMP), 10, 950, 526);
+INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (3, (SELECT CURRENT_TIMESTAMP), 20, 1000, 526);

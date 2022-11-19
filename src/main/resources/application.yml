@@ -1,7 +1,7 @@
 server:
   port: 8090
   servlet:
-    context-path: /meteo-station
+    context-path: /meteostation
 spring:
   datasource:
     url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABAE}
@@ -16,17 +16,3 @@ spring:
       hibernate:
         default_schema: meteodata
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  rabbitmq:
-    host: ${RABBITMQ_HOST}
-    port: ${RABBITMQ_PORT}
-    template:
-      retry:
-        enabled: true
-        max-attempts: 3
-        max-interval: 10000
-amqp:
-  exchange:
-    temperature: temperature-exchange
-  routing-key:
-    get-temperature-statistics: get-temperature
-    save-temperature: save-temperature

@@ -3,7 +3,7 @@ package com.weather.meteostation.api;
 import com.weather.meteostation.api.dto.MeteoDataDto;
 import com.weather.meteostation.application.usecase.GetMeteoDataStatistics;
 import com.weather.meteostation.application.usecase.SaveMeteoData;
-import com.weather.meteostation.domain.MeteoData;
+import com.weather.meteostation.domain.Meteodata;
 import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-class MeteoDataControllerTest {
+class MeteodataControllerTest {
 
     @Mock
     private SaveMeteoData saveMeteoData;
@@ -24,7 +24,7 @@ class MeteoDataControllerTest {
     private GetMeteoDataStatistics getMeteoDataStatistics;
 
     @Captor
-    private ArgumentCaptor<MeteoData> temperatureMeasureDtoCaptor;
+    private ArgumentCaptor<Meteodata> temperatureMeasureDtoCaptor;
 
     @BeforeEach
     void setup() {
@@ -32,7 +32,7 @@ class MeteoDataControllerTest {
     }
 
     @Test void
-    registerTemperatureMeasure() {
+    registerMeteodata() {
         MeteoDataController meteoDataController = new MeteoDataController(saveMeteoData, getMeteoDataStatistics);
 
         MeteoDataDto actualMeteoDataDto = MeteoDataDto.builder()

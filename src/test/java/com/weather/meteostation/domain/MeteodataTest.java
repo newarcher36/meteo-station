@@ -1,4 +1,4 @@
-package com.weather.meteostation.api.dto;
+package com.weather.meteostation.domain;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,37 +6,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.joda.time.LocalDateTime.now;
 
-class MeteoDataDtoTest {
+public class MeteodataTest {
 
     @Test void
     validateMeteoDataTimestamp() {
-        Throwable throwable = catchThrowable(() ->  MeteoDataDto.builder()
-                .withTimestamp(null)
+        Throwable throwable = catchThrowable(() ->  Meteodata.builder()
+                .withRegistrationDateTime(null)
                 .build());
 
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Meteo data timestamp is required");
+                .hasMessage("Registration date is required");
     }
 
     @Test void
     validateTemperatureValue() {
-        Throwable throwable = catchThrowable(() ->  MeteoDataDto.builder()
-                .withTimestamp(now())
+        Throwable throwable = catchThrowable(() ->  Meteodata.builder()
+                .withRegistrationDateTime(now())
                 .withTemperature(null)
                 .build());
 
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Temperature value is required");
+                .hasMessage("Temperature is required");
     }
 
     @Test void
     validatePressureValue() {
-        Throwable throwable = catchThrowable(() ->  MeteoDataDto.builder()
-                .withTimestamp(now())
+        Throwable throwable = catchThrowable(() ->  Meteodata.builder()
+                .withRegistrationDateTime(now())
                 .withTemperature(23f)
                 .withPressure(null)
                 .build());
@@ -44,13 +44,13 @@ class MeteoDataDtoTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Pressure value is required");
+                .hasMessage("Pressure is required");
     }
 
     @Test void
     validateElevationValue() {
-        Throwable throwable = catchThrowable(() ->  MeteoDataDto.builder()
-                .withTimestamp(now())
+        Throwable throwable = catchThrowable(() ->  Meteodata.builder()
+                .withRegistrationDateTime(now())
                 .withTemperature(23f)
                 .withPressure(950f)
                 .withElevation(null)
@@ -59,6 +59,6 @@ class MeteoDataDtoTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Elevation value is required");
+                .hasMessage("Elevation is required");
     }
 }

@@ -1,17 +1,12 @@
 package com.weather.meteostation.feature;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.weather.meteostation.infrastructure.amqp.event.SaveTemperatureDataEvent;
-import com.weather.meteostation.infrastructure.amqp.event.TemperatureDataSavedEvent;
 import io.restassured.RestAssured;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -23,25 +18,18 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.IOException;
-
 import static io.restassured.RestAssured.given;
-import static java.net.HttpURLConnection.HTTP_OK;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.hamcrest.Matchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @ActiveProfiles("test")
-@ContextConfiguration(initializers = {SaveMeteoDataIT.Initializer.class})
-@Sql(scripts = {"/schema.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class SaveMeteoDataIT {
+@ContextConfiguration(initializers = {GetMeteodataStatisticsIT.Initializer.class})
+@Sql(scripts = {"/schema.sql","/insert-temperature-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+public class GetMeteodataStatisticsIT {
 
     @Value("${local.server.port}")
     private int port;
-
-    @MockBean
-    private RabbitTemplate rabbitTemplate;
 
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "postgres";
@@ -68,25 +56,20 @@ public class SaveMeteoDataIT {
     }
 
     @Test void
-    saveMeteoDataFromSensor() throws IOException {
+    getMeteoDataStatistics() {
 
-        TemperatureDataSavedEvent temperatureDataSavedEvent = TemperatureDataSavedEvent.builder()
-                .withId(1L)
-                .withMeteoDataId(1L)
-                .withTemperatureValue(23f)
+        ResponseSpecification responseSpec = new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("currentTemperature", is(25f))
+                .expectBody("avgTemperature", is(20f))
+                .expectBody("maxTemperature", is(30f))
+                .expectBody("minTemperature", is(10f))
                 .build();
-
-        BDDMockito.given(rabbitTemplate.convertSendAndReceiveAsType(anyString(), anyString(), any(SaveTemperatureDataEvent.class), any())).willReturn(temperatureDataSavedEvent);
 
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(aMeteoDataDto())
-                .post("/meteo-station/api/v1/meteo-data")
+                .get("/meteostation/api/meteodata/today")
                 .then()
-                .statusCode(HTTP_OK);
-    }
-
-    private JsonNode aMeteoDataDto() throws IOException {
-        return new ObjectMapper().readTree("{\"timestamp\":1642361588112, \"temperature\":3, \"pressure\":980, \"elevation\":526}");
+                .spec(responseSpec);
     }
 }
