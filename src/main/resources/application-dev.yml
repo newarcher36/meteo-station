@@ -4,7 +4,7 @@ server:
     context-path: /meteostation
 spring:
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABAE}
+    url: jdbc:postgresql://localhost:5432/meteodata
     driver-class-name: org.postgresql.Driver
     username: ${PGUSER}
     password: ${POSTGRES_PASSWORD}
@@ -14,5 +14,5 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        default_schema: meteodata
+        default_schema: meteostation
         dialect: org.hibernate.dialect.PostgreSQLDialect

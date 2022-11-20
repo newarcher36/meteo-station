@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.is;
 @Testcontainers
 @ActiveProfiles("test")
 @ContextConfiguration(initializers = {GetMeteodataStatisticsIT.Initializer.class})
-@Sql(scripts = {"/schema.sql","/insert-temperature-data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"/schema.sql", "/insert-meteodata.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class GetMeteodataStatisticsIT {
 
     @Value("${local.server.port}")

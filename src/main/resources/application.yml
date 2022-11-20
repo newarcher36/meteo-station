@@ -11,8 +11,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        default_schema: meteodata
+        default_schema: meteostation
         dialect: org.hibernate.dialect.PostgreSQLDialect
