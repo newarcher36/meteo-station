@@ -1,3 +1,4 @@
-INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (1, (SELECT CURRENT_TIMESTAMP), 0, 900, 526);
-INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (2, (SELECT CURRENT_TIMESTAMP), 10, 950, 526);
-INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (3, (SELECT CURRENT_TIMESTAMP), 20, 1000, 526);
+INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (1, (SELECT CURRENT_TIMESTAMP - INTERVAL '2 minutes'), 10, 900, 526);
+INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (2, (SELECT CURRENT_TIMESTAMP - INTERVAL '3 minutes'), 20, 950, 526);
+INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (3, (SELECT CURRENT_TIMESTAMP - INTERVAL '4 minutes'), 30, 1000, 526);
+INSERT INTO meteostation.meteodata (id, registration_date_time, temperature, pressure, elevation) VALUES (4, (SELECT CURRENT_TIMESTAMP - INTERVAL '5 minutes'), 40, 1000, 526);

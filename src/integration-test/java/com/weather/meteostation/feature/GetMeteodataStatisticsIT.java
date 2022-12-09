@@ -60,9 +60,9 @@ public class GetMeteodataStatisticsIT {
 
         ResponseSpecification responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
-                .expectBody("currentTemperature", is(25f))
-                .expectBody("avgTemperature", is(20f))
-                .expectBody("maxTemperature", is(30f))
+                .expectBody("currentTemperature", is(10f))
+                .expectBody("avgTemperature", is(25f))
+                .expectBody("maxTemperature", is(40f))
                 .expectBody("minTemperature", is(10f))
                 .build();
 
